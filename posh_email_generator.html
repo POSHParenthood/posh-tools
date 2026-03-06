@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>POSH Parenthood — Outreach Email Generator</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --g: #1F3D2B; --g2: #2D5A3D; --g3: #3D6B4E;
+  --au: #C9A84C; --au2: #E8C97A;
+  --cr: #FAF6EE; --c2: #F5EDD3;
+  --te: #4E8080; --mid: #5A6A5E;
+  --dk: #0E1F14; --err: #8B2020;
+  --w: #FFFFFF;
+}
+
+body{
+  background: var(--dk);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  min-height: 100vh;
+  color: var(--cr);
+}
+
+/* ── HEADER ── */
+.header{
+  background: var(--g);
+  border-bottom: 1px solid rgba(201,168,76,.2);
+  padding: 1.25rem 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.header-brand{
+  display: flex; align-items: baseline; gap: .75rem;
+}
+.header-logo{
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.35rem; font-weight: 600;
+  color: var(--cr); letter-spacing: .02em;
+}
+.header-tag{
+  font-size: .65rem; font-weight: 500;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--au);
+}
+.header-badge{
+  font-size: .6rem; font-weight: 600;
+  letter-spacing: .16em; text-transform: uppercase;
+  background: rgba(201,168,76,.12);
+  border: 1px solid rgba(201,168,76,.3);
+  color: var(--au);
+  padding: .3rem .8rem;
+}
+
+/* ── LAYOUT ── */
+.shell{
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  min-height: calc(100vh - 61px);
+}
+
+/* ── LEFT PANEL ── */
+.panel{
+  background: var(--g);
+  border-right: 1px solid rgba(201,168,76,.12);
+  padding: 1.75rem 1.5rem;
+  display: flex; flex-direction: column; gap: 1.25rem;
+  overflow-y: auto;
+}
+
+.panel-title{
+  font-size: .65rem; font-weight: 600;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: var(--au); margin-bottom: .25rem;
+}
+
+.field-group{ display: flex; flex-direction: column; gap: .35rem; }
+
+.field-label{
+  font-size: .7rem; font-weight: 500;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: rgba(250,246,238,.5);
+}
+
+.field-input, .field-select, .field-textarea{
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(201,168,76,.18);
+  color: var(--cr);
+  font-family: 'DM Sans', sans-serif;
+  font-size: .875rem; font-weight: 300;
+  padding: .6rem .85rem;
+  outline: none;
+  transition: border-color .2s;
+  width: 100%;
+}
+.field-input::placeholder, .field-textarea::placeholder{ color: rgba(250,246,238,.25); }
+.field-input:focus, .field-select:focus, .field-textarea:focus{
+  border-color: var(--au);
+  background: rgba(255,255,255,.09);
+}
+.field-select{ cursor: pointer; }
+.field-select option{ background: var(--g); color: var(--cr); }
+.field-textarea{ resize: vertical; min-height: 72px; line-height: 1.55; }
+
+.field-row{ display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+
+.divider{
+  height: 1px;
+  background: linear-gradient(90deg, rgba(201,168,76,.3) 0%, transparent 100%);
+  margin: .25rem 0;
+}
+
+/* Type selector */
+.type-grid{
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: .5rem;
+}
+.type-btn{
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(201,168,76,.15);
+  color: rgba(250,246,238,.55);
+  font-family: 'DM Sans', sans-serif;
+  font-size: .75rem; font-weight: 500;
+  padding: .65rem .5rem;
+  cursor: pointer;
+  text-align: center;
+  transition: all .2s;
+  letter-spacing: .04em;
+  line-height: 1.3;
+}
+.type-btn:hover{ border-color: var(--au); color: var(--cr); background: rgba(201,168,76,.08); }
+.type-btn.active{
+  background: var(--au);
+  border-color: var(--au);
+  color: var(--g);
+  font-weight: 600;
+}
+
+/* Touchpoint selector */
+.tp-row{ display: flex; gap: .4rem; }
+.tp-btn{
+  flex: 1;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(201,168,76,.15);
+  color: rgba(250,246,238,.5);
+  font-family: 'DM Sans', sans-serif;
+  font-size: .72rem; font-weight: 500;
+  padding: .5rem .3rem;
+  cursor: pointer;
+  text-align: center;
+  transition: all .2s;
+}
+.tp-btn:hover{ border-color: var(--au); color: var(--cr); }
+.tp-btn.active{ background: rgba(201,168,76,.15); border-color: var(--au); color: var(--au); font-weight: 600; }
+
+/* Generate button */
+.gen-btn{
+  background: var(--au);
+  border: none;
+  color: var(--g);
+  font-family: 'DM Sans', sans-serif;
+  font-size: .8rem; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase;
+  padding: .95rem 1rem;
+  cursor: pointer;
+  transition: all .2s;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+.gen-btn:hover{ background: var(--au2); }
+.gen-btn:disabled{ background: rgba(201,168,76,.3); cursor: not-allowed; color: rgba(31,61,43,.5); }
+.gen-btn .spinner{
+  display: none;
+  width: 14px; height: 14px;
+  border: 2px solid rgba(31,61,43,.3);
+  border-top-color: var(--g);
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+}
+.gen-btn.loading .btn-text{ opacity: 0; }
+.gen-btn.loading .spinner{ display: block; }
+@keyframes spin{ to{ transform: translate(-50%,-50%) rotate(360deg); } }
+
+/* Conditional fields */
+.conditional{ display: none; }
+.conditional.visible{ display: flex; flex-direction: column; gap: .35rem; }
+
+/* ── RIGHT PANEL (OUTPUT) ── */
+.output{
+  background: var(--dk);
+  padding: 2rem;
+  display: flex; flex-direction: column;
+  overflow-y: auto;
+}
+
+.output-empty{
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 1rem; text-align: center; opacity: .35;
+}
+.output-empty-icon{
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 4rem; color: var(--au); line-height: 1;
+}
+.output-empty-text{
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem; font-style: italic;
+  color: var(--cr);
+}
+
+/* Email output cards */
+.emails-wrap{ display: flex; flex-direction: column; gap: 1.5rem; }
+
+.email-card{
+  background: var(--g);
+  border: 1px solid rgba(201,168,76,.15);
+  border-top: 3px solid var(--au);
+  animation: fadeUp .4s ease both;
+}
+@keyframes fadeUp{
+  from{ opacity:0; transform:translateY(12px); }
+  to{ opacity:1; transform:translateY(0); }
+}
+.email-card:nth-child(2){ animation-delay: .1s; }
+.email-card:nth-child(3){ animation-delay: .2s; }
+
+.email-card-header{
+  padding: .9rem 1.25rem;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid rgba(201,168,76,.1);
+  background: rgba(0,0,0,.12);
+}
+.email-card-tp{
+  font-size: .65rem; font-weight: 700;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--au);
+}
+.email-card-label{
+  font-size: .75rem; color: rgba(250,246,238,.5);
+}
+.copy-btn{
+  background: rgba(201,168,76,.1);
+  border: 1px solid rgba(201,168,76,.3);
+  color: var(--au);
+  font-family: 'DM Sans', sans-serif;
+  font-size: .68rem; font-weight: 600;
+  letter-spacing: .1em; text-transform: uppercase;
+  padding: .35rem .85rem;
+  cursor: pointer;
+  transition: all .2s;
+}
+.copy-btn:hover{ background: var(--au); color: var(--g); }
+.copy-btn.copied{ background: var(--g2); border-color: var(--g2); color: var(--cr); }
+
+.email-meta{
+  padding: .75rem 1.25rem;
+  background: rgba(0,0,0,.08);
+  border-bottom: 1px solid rgba(201,168,76,.08);
+  display: flex; flex-direction: column; gap: .3rem;
+}
+.email-meta-row{ display: flex; gap: .5rem; align-items: baseline; }
+.email-meta-label{
+  font-size: .65rem; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--te); min-width: 60px;
+}
+.email-meta-value{
+  font-size: .82rem; color: var(--c2);
+}
+
+.email-body{
+  padding: 1.25rem;
+  font-size: .875rem;
+  line-height: 1.75;
+  color: rgba(250,246,238,.8);
+  white-space: pre-wrap;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+}
+
+/* Error */
+.error-msg{
+  background: rgba(139,32,32,.15);
+  border: 1px solid rgba(139,32,32,.4);
+  color: #E88080;
+  padding: 1rem 1.25rem;
+  font-size: .875rem;
+  line-height: 1.6;
+}
+
+/* Output toolbar */
+.output-toolbar{
+  display: flex; gap: .75rem; margin-bottom: 1.25rem;
+  align-items: center;
+}
+.output-toolbar-title{
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem; font-style: italic;
+  color: var(--au); flex: 1;
+}
+.copy-all-btn{
+  background: var(--g2);
+  border: 1px solid rgba(201,168,76,.2);
+  color: var(--cr);
+  font-family: 'DM Sans', sans-serif;
+  font-size: .7rem; font-weight: 600;
+  letter-spacing: .12em; text-transform: uppercase;
+  padding: .45rem 1rem; cursor: pointer;
+  transition: all .2s;
+}
+.copy-all-btn:hover{ background: var(--g3); }
+
+/* Loading skeleton */
+.skeleton-wrap{ display: flex; flex-direction: column; gap: 1.5rem; }
+.skeleton-card{
+  background: var(--g);
+  border: 1px solid rgba(201,168,76,.1);
+  border-top: 3px solid rgba(201,168,76,.3);
+  padding: 1.25rem;
+  display: flex; flex-direction: column; gap: .75rem;
+}
+.skeleton-line{
+  height: .75rem; background: rgba(255,255,255,.06);
+  border-radius: 2px; animation: shimmer 1.4s infinite;
+}
+@keyframes shimmer{
+  0%,100%{ opacity: .4; } 50%{ opacity: .8; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-brand">
+    <span class="header-logo">POSH Parenthood</span>
+    <span class="header-tag">Outreach Engine</span>
+  </div>
+  <span class="header-badge">Private · Internal Use Only</span>
+</header>
+
+<div class="shell">
+
+  <!-- ── LEFT: INPUT PANEL ── -->
+  <div class="panel">
+
+    <div>
+      <p class="panel-title">Outreach Type</p>
+      <div class="type-grid">
+        <button class="type-btn active" data-type="sponsor" onclick="setType('sponsor',this)">Monetary<br>Sponsor</button>
+        <button class="type-btn" data-type="inkind" onclick="setType('inkind',this)">In-Kind<br>Donor</button>
+        <button class="type-btn" data-type="corporate" onclick="setType('corporate',this)">Corporate<br>Ticket Pack</button>
+        <button class="type-btn" data-type="venue" onclick="setType('venue',this)">Venue<br>Partner</button>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Organization Info -->
+    <div>
+      <p class="panel-title">Organization</p>
+      <div style="display:flex;flex-direction:column;gap:.65rem">
+        <div class="field-group">
+          <label class="field-label">Organization Name *</label>
+          <input class="field-input" id="orgName" placeholder="e.g. Scholastic Corporation" />
+        </div>
+        <div class="field-group">
+          <label class="field-label">Contact Name</label>
+          <input class="field-input" id="contactName" placeholder="e.g. Jessica Rolph" />
+        </div>
+        <div class="field-group">
+          <label class="field-label">Contact Title</label>
+          <input class="field-input" id="contactTitle" placeholder="e.g. CEO, Program Director" />
+        </div>
+        <div class="field-group">
+          <label class="field-label">What They Do (1–2 sentences)</label>
+          <textarea class="field-textarea" id="orgDesc" placeholder="e.g. Premium developmental toy subscription company serving families with children ages 0–5."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Sponsor-specific fields -->
+    <div id="sponsorFields">
+      <p class="panel-title">Sponsorship Details</p>
+      <div style="display:flex;flex-direction:column;gap:.65rem">
+        <div class="field-group">
+          <label class="field-label">Target Tier</label>
+          <select class="field-select" id="sponsorTier">
+            <option value="platinum">Platinum — Starting at $10,000/year</option>
+            <option value="gold">Gold — From $2,500/event · $6,000/year</option>
+            <option value="silver">Silver — $1,000/event · $2,500/year</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Category / Industry</label>
+          <input class="field-input" id="sponsorCategory" placeholder="e.g. Children's publishing, Pediatric health" />
+        </div>
+        <div class="field-group">
+          <label class="field-label">Mission Connection (optional)</label>
+          <input class="field-input" id="missionNote" placeholder="e.g. Their Grow Up Great program aligns with..." />
+        </div>
+      </div>
+    </div>
+
+    <!-- In-kind fields -->
+    <div id="inkindFields" class="conditional">
+      <p class="panel-title">In-Kind Details</p>
+      <div style="display:flex;flex-direction:column;gap:.65rem">
+        <div class="field-group">
+          <label class="field-label">Donation Category</label>
+          <select class="field-select" id="inkindCategory">
+            <option value="gifts">Gifts & Swag — Gift bags, branded items</option>
+            <option value="catering">Catering — Food & beverages</option>
+            <option value="floral">Floral / Décor</option>
+            <option value="printing">Printing — Programs, signage</option>
+            <option value="av">A/V & Production</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Estimated Value</label>
+          <select class="field-select" id="inkindValue">
+            <option value="platinum">$5,000+ (Platinum-level recognition)</option>
+            <option value="gold">$2,500–$4,999 (Gold-level recognition)</option>
+            <option value="silver">$1,000–$2,499 (Silver-level recognition)</option>
+            <option value="community">Under $1,000 (Community acknowledgment)</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label class="field-label">What makes them a natural fit?</label>
+          <textarea class="field-textarea" id="inkindFit" placeholder="e.g. They supply branded merchandise to events and have worked with family-focused orgs before."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Venue fields -->
+    <div id="venueFields" class="conditional">
+      <p class="panel-title">Venue Details</p>
+      <div style="display:flex;flex-direction:column;gap:.65rem">
+        <div class="field-group">
+          <label class="field-label">Venue / Property Type</label>
+          <select class="field-select" id="venueType">
+            <option value="hotel">Hotel / Conference Center</option>
+            <option value="university">University / College</option>
+            <option value="cultural">Cultural Center / Museum</option>
+            <option value="corporate">Corporate Event Space</option>
+            <option value="community">Community / Rec Center</option>
+            <option value="restaurant">Restaurant / Catering Hall</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Event (which one needs a venue?)</label>
+          <select class="field-select" id="venueEvent">
+            <option value="gathering">June 2026 Gathering (100–150 people, half-day)</option>
+            <option value="summit">September 2026 Summit (200+ people, full day)</option>
+            <option value="village">Spring 2027 Village (families + children, half-day)</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Why this space fits POSH</label>
+          <textarea class="field-textarea" id="venueFit" placeholder="e.g. Premium event space, close to transit, aligns with our upscale aesthetic."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Corporate ticket fields -->
+    <div id="corporateFields" class="conditional">
+      <p class="panel-title">Corporate Pack Details</p>
+      <div style="display:flex;flex-direction:column;gap:.65rem">
+        <div class="field-group">
+          <label class="field-label">Organization Type</label>
+          <select class="field-select" id="corpType">
+            <option value="district">School District / Board of Ed</option>
+            <option value="pediatric">Pediatric Practice / Children's Hospital</option>
+            <option value="hr">HR / Employee Benefits Team</option>
+            <option value="nonprofit">Nonprofit / Family Services Org</option>
+            <option value="hospital">Hospital / Health System</option>
+            <option value="corporate">Corporate (general)</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Recommended Pack</label>
+          <select class="field-select" id="corpPack">
+            <option value="5pack">5-Pack — $1,750 ($350/seat)</option>
+            <option value="10pack">10-Pack — $3,250 ($325/seat)</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label class="field-label">Why this org should bring their team</label>
+          <textarea class="field-textarea" id="corpReason" placeholder="e.g. They have a large staff of family counselors who would benefit from the Summit content."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Touchpoints -->
+    <div>
+      <p class="panel-title">Generate Touchpoints</p>
+      <div class="tp-row">
+        <button class="tp-btn active" data-tp="1" onclick="toggleTp(1,this)">TP1<br><span style="font-size:.65rem;opacity:.7">Intro</span></button>
+        <button class="tp-btn active" data-tp="2" onclick="toggleTp(2,this)">TP2<br><span style="font-size:.65rem;opacity:.7">Follow-up</span></button>
+        <button class="tp-btn active" data-tp="3" onclick="toggleTp(3,this)">TP3<br><span style="font-size:.65rem;opacity:.7">Final Close</span></button>
+      </div>
+    </div>
+
+    <button class="gen-btn" id="genBtn" onclick="generate()">
+      <span class="btn-text">Generate Emails</span>
+      <div class="spinner"></div>
+    </button>
+
+  </div>
+
+  <!-- ── RIGHT: OUTPUT ── -->
+  <div class="output" id="output">
+    <div class="output-empty" id="emptyState">
+      <div class="output-empty-icon">✦</div>
+      <p class="output-empty-text">Fill in the details and generate<br>your custom email sequence.</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ── State ─────────────────────────────────────────────────────────────────
+let currentType = 'sponsor';
+let activeTps = new Set([1,2,3]);
+
+function setType(type, btn) {
+  currentType = type;
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  const fields = ['sponsorFields','inkindFields','venueFields','corporateFields'];
+  fields.forEach(f => {
+    const el = document.getElementById(f);
+    el.classList.remove('visible');
+    el.style.display = 'none';
+  });
+
+  const map = { sponsor:'sponsorFields', inkind:'inkindFields', venue:'venueFields', corporate:'corporateFields' };
+  const target = document.getElementById(map[type]);
+  if (type !== 'sponsor') {
+    target.classList.add('visible');
+    target.style.display = 'flex';
+  } else {
+    target.style.display = 'block';
+  }
+}
+
+function toggleTp(num, btn) {
+  if (activeTps.has(num) && activeTps.size === 1) return;
+  if (activeTps.has(num)) {
+    activeTps.delete(num);
+    btn.classList.remove('active');
+  } else {
+    activeTps.add(num);
+    btn.classList.add('active');
+  }
+}
+
+// ── Build prompt ──────────────────────────────────────────────────────────
+function buildPrompt() {
+  const org = document.getElementById('orgName').value.trim();
+  const contact = document.getElementById('contactName').value.trim();
+  const title = document.getElementById('contactTitle').value.trim();
+  const desc = document.getElementById('orgDesc').value.trim();
+
+  if (!org) return null;
+
+  const tps = Array.from(activeTps).sort();
+  const tpLabels = { 1: 'TP1 (initial outreach)', 2: 'TP2 (follow-up, 7-10 days later, no response assumed)', 3: 'TP3 (final kind close, 7 days after TP2)' };
+
+  let typeContext = '';
+  let emailPurpose = '';
+
+  if (currentType === 'sponsor') {
+    const tier = document.getElementById('sponsorTier').value;
+    const category = document.getElementById('sponsorCategory').value.trim();
+    const mission = document.getElementById('missionNote').value.trim();
+    const tierInfo = {
+      platinum: 'Platinum Founding Partner — starting at $10,000/year (2-year minimum). Category exclusive. Benefits: named presenting sponsor on all materials, activation at all 3 events, 5 VIP tickets per event, 2-min welcome address, gift bag inserts, social media features, first right of refusal on future events. Custom/enhanced packages available for larger investments.',
+      gold: 'Gold Event Partner — from $2,500/event or $6,000/year (all 3 events). Benefits: sponsor table, logo on all materials, 2 GA tickets, 1 social media post, 50-word program listing, gift bag insert, post-event recognition.',
+      silver: 'Silver Community Partner — $1,000/event or $2,500/year. Benefits: sponsor table, logo in program, 1 GA ticket, 25-word listing, social mention, post-event recognition.'
+    };
+    typeContext = `This is a MONETARY SPONSORSHIP outreach. Target tier: ${tierInfo[tier]}. Organization category/industry: ${category || 'general'}. ${mission ? `Mission connection note: ${mission}` : ''}`;
+    emailPurpose = 'secure a sponsorship commitment';
+  } else if (currentType === 'inkind') {
+    const cat = document.getElementById('inkindCategory').value;
+    const val = document.getElementById('inkindValue').value;
+    const fit = document.getElementById('inkindFit').value.trim();
+    const catLabels = { gifts:'Gifts & Swag (branded items, attendee gift bags)', catering:'Catering (food and beverages for event)', floral:'Floral / Décor', printing:'Printing (programs, signage, materials)', av:'A/V & Production' };
+    const valLabels = { platinum:'$5,000+ value — Platinum-level recognition', gold:'$2,500–$4,999 — Gold-level recognition', silver:'$1,000–$2,499 — Silver-level recognition', community:'Under $1,000 — community acknowledgment' };
+    typeContext = `This is an IN-KIND DONATION outreach. Donation category: ${catLabels[cat]}. Estimated value: ${valLabels[val]}. Recognition: in-kind donors receive non-cash sponsor benefits at their value level (logo, signage, social features) but not cash-equivalent perks like VIP tickets unless negotiated. ${fit ? `Why they're a fit: ${fit}` : ''}`;
+    emailPurpose = 'secure an in-kind donation of products or services';
+  } else if (currentType === 'venue') {
+    const vType = document.getElementById('venueType').value;
+    const event = document.getElementById('venueEvent').value;
+    const fit = document.getElementById('venueFit').value.trim();
+    const eventDetails = { gathering:'The POSH Parenthood Gathering — June 27, 2026, Philadelphia/Delaware area, 100–150 attendees, half-day event, needs flexible space for breakout sessions, keynote, and sponsor village', summit:'The POSH Parenthood Summit — September 28, 2026, Northeast US, 200+ attendees, full-day event, needs main hall + 3 breakout rooms + pre-function space', village:'The POSH Parenthood Village — Spring 2027, Northeast US, family event with children ages 0–8, needs large flexible space with zones for different age groups' };
+    typeContext = `This is a VENUE PARTNERSHIP outreach. They are a ${vType}. Event needing a venue: ${eventDetails[event]}. Frame this as a mutual marketing opportunity — POSH brings a premium, engaged audience of parents, educators, and administrators to their space. This is not a charity request; it is a partnership proposal. ${fit ? `Why this space fits: ${fit}` : ''} In exchange for donated/discounted space, the venue receives: presenting venue sponsor recognition on all event materials, prominent signage during the event, social media features, program listing, and an audience of 100–200+ community-invested professionals experiencing their property.`;
+    emailPurpose = 'secure donated or deeply discounted event space in exchange for presenting venue sponsor recognition';
+  } else if (currentType === 'corporate') {
+    const cType = document.getElementById('corpType').value;
+    const pack = document.getElementById('corpPack').value;
+    const reason = document.getElementById('corpReason').value.trim();
+    const packDetails = { '5pack':'5-Pack — $1,750 ($350/seat, saves $985 vs 5 individual tickets)', '10pack':'10-Pack — $3,250 ($325/seat, saves $1,970 vs 10 individual tickets)' };
+    const typeLabels = { district:'School District / Board of Education', pediatric:'Pediatric Practice / Children\'s Hospital', hr:'HR / Employee Benefits Team', nonprofit:'Nonprofit / Family Services Organization', hospital:'Hospital / Health System', corporate:'Corporate organization' };
+    typeContext = `This is a CORPORATE TICKET PACK outreach. Organization type: ${typeLabels[cType]}. Recommended pack: ${packDetails[pack]}. The POSH Parenthood Summit is September 28, 2026 — a full-day professional development event for parents, educators, and administrators grounded in the R.H.Y.T.H.M.™ Model. Frame this as professional development investment for their team, not just event tickets. ${reason ? `Why this org should bring their team: ${reason}` : ''}`;
+    emailPurpose = 'sell a corporate ticket pack for their team to attend the Summit';
+  }
+
+  const prompt = `You are writing outreach emails on behalf of Dr. Shanelle Bolton, Founder and CEO of POSH Parenthood. 
+
+ABOUT POSH PARENTHOOD:
+- Premium early childhood coaching practice and event brand
+- Founded by Dr. Shanelle Bolton, EdD, MST, MLS — 15+ years in education leadership
+- Proprietary R.H.Y.T.H.M.™ Model: Reflect · Harmonize · Yield · Teach · Hold · Maintain
+- Programs: Newborn Nest (0–3 mo), Infant Foundations (3–12 mo), Toddler Rhythms (1–3 yrs), Kindergarten Compass (PreK–5), Lab: Blueprint Edition (parent entrepreneurs)
+- Events: The Gathering (June 27, 2026, Philadelphia/Delaware, 100–150 attendees), The Summit (Sept 28, 2026, Northeast US, 200+ attendees), The Village (Spring 2027, family event)
+- Contact: partnerships@poshparenthood.com | poshparenthood.com
+- Dr. Bolton's voice: warm, credentialed, purposeful, confident without being pushy. Never desperate. Premium positioning throughout.
+
+RECIPIENT:
+- Organization: ${org}
+- Contact: ${contact || '[Contact Name]'}, ${title || '[Title]'}
+- About them: ${desc || 'Not provided — write generally but specifically about what they likely do based on their name/type.'}
+
+OUTREACH CONTEXT:
+${typeContext}
+
+YOUR TASK:
+Write ${tps.length} email(s) in sequence. The goal of this outreach is to ${emailPurpose}.
+
+For each email, provide:
+TOUCHPOINT: [TP number and type]
+SUBJECT: [email subject line]
+BODY: [complete email body]
+
+Guidelines for each touchpoint:
+${tps.map(tp => `- ${tpLabels[tp]}`).join('\n')}
+
+TONE RULES:
+- TP1: Warm, specific to THEM, lead with connection not the ask. Make them feel seen before making any request. 3–4 short paragraphs max for large orgs. Founder-led small orgs can be slightly warmer/longer.
+- TP2: Brief. Reference TP1. Add one new piece of value or context. No calendar links. End with soft open question.
+- TP3: Very short. Gracious. No pressure. Leave the door open. 3–4 sentences max after the greeting.
+- NEVER use a calendar link in TP1 for foundations, large corporations, or government orgs.
+- NEVER sound like a mass email. Every email must feel written specifically for this organization.
+- Sign all emails: Dr. Shanelle Bolton, EdD, MST, MLS / Founder + CEO, POSH Parenthood / partnerships@poshparenthood.com | poshparenthood.com
+- Do not add [INSERT LINK] or placeholder URLs — just the email and website.
+
+Write all ${tps.length} email(s) now. Separate each with --- on its own line.`;
+
+  return { prompt, org, tps };
+}
+
+// ── Generate ──────────────────────────────────────────────────────────────
+async function generate() {
+  const built = buildPrompt();
+  if (!built) {
+    alert('Please enter an organization name.');
+    return;
+  }
+
+  const btn = document.getElementById('genBtn');
+  btn.classList.add('loading');
+  btn.disabled = true;
+
+  const output = document.getElementById('output');
+  output.innerHTML = `
+    <div class="skeleton-wrap">
+      ${[1,2,3].filter(n=>activeTps.has(n)).map(()=>`
+        <div class="skeleton-card">
+          <div class="skeleton-line" style="width:30%"></div>
+          <div class="skeleton-line" style="width:60%"></div>
+          <div class="skeleton-line" style="width:100%"></div>
+          <div class="skeleton-line" style="width:90%"></div>
+          <div class="skeleton-line" style="width:95%"></div>
+          <div class="skeleton-line" style="width:80%"></div>
+        </div>
+      `).join('')}
+    </div>`;
+
+  try {
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 3000,
+        messages: [{ role: "user", content: built.prompt }]
+      })
+    });
+
+    const data = await response.json();
+
+    if (data.error) throw new Error(data.error.message);
+
+    const raw = data.content.map(c => c.text || '').join('');
+    renderEmails(raw, built.org, built.tps);
+
+  } catch (err) {
+    output.innerHTML = `<div class="error-msg">⚠ Error generating emails: ${err.message}<br><br>If this is a network error, ensure you are accessing this tool through a connection that can reach the Anthropic API.</div>`;
+  } finally {
+    btn.classList.remove('loading');
+    btn.disabled = false;
+  }
+}
+
+// ── Render emails ─────────────────────────────────────────────────────────
+function renderEmails(raw, orgName, tps) {
+  const output = document.getElementById('output');
+
+  // Split by --- separator
+  const sections = raw.split(/\n---\n/).map(s => s.trim()).filter(Boolean);
+
+  const tpLabels = ['Initial Outreach', 'Follow-Up', 'Final Close'];
+  const tpNums = Array.from(activeTps).sort();
+
+  let html = `
+    <div class="output-toolbar">
+      <span class="output-toolbar-title">Email sequence for ${orgName}</span>
+      <button class="copy-all-btn" onclick="copyAll()">Copy All</button>
+    </div>
+    <div class="emails-wrap" id="emailsWrap">`;
+
+  sections.forEach((section, i) => {
+    const tpNum = tpNums[i] || (i + 1);
+    const label = tpLabels[tpNum - 1] || `Touchpoint ${tpNum}`;
+
+    // Extract subject line
+    const subjectMatch = section.match(/SUBJECT:\s*(.+)/i);
+    const subject = subjectMatch ? subjectMatch[1].trim() : '';
+
+    // Extract body — everything after BODY: or after the subject line
+    let body = section;
+    body = body.replace(/^TOUCHPOINT:.*\n/i, '');
+    body = body.replace(/^SUBJECT:.*\n/i, '');
+    body = body.replace(/^BODY:\s*/i, '');
+    body = body.trim();
+
+    html += `
+      <div class="email-card" data-idx="${i}">
+        <div class="email-card-header">
+          <div>
+            <span class="email-card-tp">TP${tpNum} — ${label}</span>
+          </div>
+          <button class="copy-btn" onclick="copyEmail(${i})">Copy Email</button>
+        </div>
+        ${subject ? `
+        <div class="email-meta">
+          <div class="email-meta-row">
+            <span class="email-meta-label">Subject</span>
+            <span class="email-meta-value">${escHtml(subject)}</span>
+          </div>
+          <div class="email-meta-row">
+            <span class="email-meta-label">From</span>
+            <span class="email-meta-value">partnerships@poshparenthood.com</span>
+          </div>
+        </div>` : ''}
+        <div class="email-body" id="emailBody${i}">${escHtml(body)}</div>
+      </div>`;
+  });
+
+  html += `</div>`;
+  output.innerHTML = html;
+}
+
+function escHtml(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function copyEmail(idx) {
+  const bodyEl = document.getElementById(`emailBody${idx}`);
+  const card = document.querySelector(`.email-card[data-idx="${idx}"]`);
+  const subjectEl = card.querySelector('.email-meta-value');
+  const subject = subjectEl ? `Subject: ${subjectEl.textContent}\n\n` : '';
+  const text = subject + bodyEl.textContent;
+
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = card.querySelector('.copy-btn');
+    btn.textContent = 'Copied ✓';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy Email'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function copyAll() {
+  const cards = document.querySelectorAll('.email-card');
+  let all = '';
+  cards.forEach((card, i) => {
+    const tp = card.querySelector('.email-card-tp').textContent;
+    const subjectEl = card.querySelector('.email-meta-value');
+    const subject = subjectEl ? `Subject: ${subjectEl.textContent}\n` : '';
+    const body = card.querySelector('.email-body').textContent;
+    all += `${tp}\n${subject}\n${body}\n\n${'─'.repeat(60)}\n\n`;
+  });
+  navigator.clipboard.writeText(all).then(() => {
+    const btn = document.querySelector('.copy-all-btn');
+    btn.textContent = 'Copied ✓';
+    setTimeout(() => { btn.textContent = 'Copy All'; }, 2000);
+  });
+}
+
+// Init — show sponsor fields by default
+document.getElementById('sponsorFields').style.display = 'block';
+</script>
+</body>
+</html>

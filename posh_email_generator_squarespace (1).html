@@ -1,0 +1,351 @@
+<div id="posh-gen">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+#posh-gen *{box-sizing:border-box;margin:0;padding:0}
+#posh-gen{font-family:'DM Sans',sans-serif;font-weight:300;background:#0E1F14;color:#FAF6EE;width:100%;border-radius:4px;overflow:hidden}
+#posh-gen .pg-head{background:#1F3D2B;border-bottom:1px solid rgba(201,168,76,.2);padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between}
+#posh-gen .pg-logo{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:#FAF6EE;letter-spacing:.02em}
+#posh-gen .pg-tag{font-size:.6rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#C9A84C;margin-left:.6rem}
+#posh-gen .pg-badge{font-size:.58rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);color:#C9A84C;padding:.25rem .7rem}
+#posh-gen .pg-body{display:grid;grid-template-columns:340px 1fr;min-height:700px}
+@media(max-width:780px){#posh-gen .pg-body{grid-template-columns:1fr}}
+#posh-gen .pg-panel{background:#1F3D2B;border-right:1px solid rgba(201,168,76,.1);padding:1.5rem 1.25rem;display:flex;flex-direction:column;gap:1rem;overflow-y:auto}
+#posh-gen .pg-sec-title{font-size:.6rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#C9A84C;margin-bottom:.2rem}
+#posh-gen .pg-lbl{font-size:.65rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:rgba(250,246,238,.45);display:block;margin-bottom:.3rem}
+#posh-gen input,#posh-gen select,#posh-gen textarea{background:rgba(255,255,255,.06);border:1px solid rgba(201,168,76,.18);color:#FAF6EE;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:300;padding:.55rem .8rem;outline:none;width:100%;transition:border-color .2s}
+#posh-gen input:focus,#posh-gen select:focus,#posh-gen textarea:focus{border-color:#C9A84C;background:rgba(255,255,255,.09)}
+#posh-gen input::placeholder,#posh-gen textarea::placeholder{color:rgba(250,246,238,.22)}
+#posh-gen select option{background:#1F3D2B;color:#FAF6EE}
+#posh-gen textarea{resize:vertical;min-height:64px;line-height:1.5}
+#posh-gen .pg-field{display:flex;flex-direction:column;gap:.3rem;margin-bottom:.6rem}
+#posh-gen .pg-div{height:1px;background:linear-gradient(90deg,rgba(201,168,76,.3),transparent);margin:.2rem 0}
+#posh-gen .pg-type-grid{display:grid;grid-template-columns:1fr 1fr;gap:.4rem}
+#posh-gen .pg-tbtn{background:rgba(255,255,255,.04);border:1px solid rgba(201,168,76,.15);color:rgba(250,246,238,.5);font-family:'DM Sans',sans-serif;font-size:.72rem;font-weight:500;padding:.6rem .4rem;cursor:pointer;text-align:center;transition:all .2s;line-height:1.3}
+#posh-gen .pg-tbtn:hover{border-color:#C9A84C;color:#FAF6EE;background:rgba(201,168,76,.08)}
+#posh-gen .pg-tbtn.on{background:#C9A84C;border-color:#C9A84C;color:#1F3D2B;font-weight:600}
+#posh-gen .pg-tprow{display:flex;gap:.35rem}
+#posh-gen .pg-tpbtn{flex:1;background:rgba(255,255,255,.04);border:1px solid rgba(201,168,76,.15);color:rgba(250,246,238,.45);font-family:'DM Sans',sans-serif;font-size:.7rem;font-weight:500;padding:.45rem .2rem;cursor:pointer;text-align:center;transition:all .2s}
+#posh-gen .pg-tpbtn.on{background:rgba(201,168,76,.15);border-color:#C9A84C;color:#C9A84C;font-weight:600}
+#posh-gen .pg-genbtn{background:#C9A84C;border:none;color:#1F3D2B;font-family:'DM Sans',sans-serif;font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:.9rem;cursor:pointer;width:100%;transition:all .2s;position:relative;margin-top:.5rem}
+#posh-gen .pg-genbtn:hover{background:#E8C97A}
+#posh-gen .pg-genbtn:disabled{background:rgba(201,168,76,.3);cursor:not-allowed;color:rgba(31,61,43,.4)}
+#posh-gen .pg-spin{display:none;width:13px;height:13px;border:2px solid rgba(31,61,43,.3);border-top-color:#1F3D2B;border-radius:50%;animation:pgspin .7s linear infinite;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
+#posh-gen .pg-genbtn.loading .pg-btext{opacity:0}
+#posh-gen .pg-genbtn.loading .pg-spin{display:block}
+@keyframes pgspin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+#posh-gen .pg-cond{display:none;flex-direction:column;gap:.3rem}
+#posh-gen .pg-cond.show{display:flex}
+#posh-gen .pg-out{background:#0E1F14;padding:1.5rem;display:flex;flex-direction:column;overflow-y:auto}
+#posh-gen .pg-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.75rem;text-align:center;opacity:.3;padding:3rem 1rem}
+#posh-gen .pg-empty-icon{font-family:'Cormorant Garamond',serif;font-size:3.5rem;color:#C9A84C}
+#posh-gen .pg-empty-txt{font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;color:#FAF6EE}
+#posh-gen .pg-emails{display:flex;flex-direction:column;gap:1.25rem}
+#posh-gen .pg-card{background:#1F3D2B;border:1px solid rgba(201,168,76,.15);border-top:3px solid #C9A84C;animation:pgup .4s ease both}
+#posh-gen .pg-card:nth-child(2){animation-delay:.1s}
+#posh-gen .pg-card:nth-child(3){animation-delay:.2s}
+@keyframes pgup{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+#posh-gen .pg-card-hd{padding:.8rem 1.1rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(201,168,76,.1);background:rgba(0,0,0,.12)}
+#posh-gen .pg-card-tp{font-size:.62rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#C9A84C}
+#posh-gen .pg-cpbtn{background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.3);color:#C9A84C;font-family:'DM Sans',sans-serif;font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:.3rem .75rem;cursor:pointer;transition:all .2s}
+#posh-gen .pg-cpbtn:hover{background:#C9A84C;color:#1F3D2B}
+#posh-gen .pg-cpbtn.done{background:#2D5A3D;border-color:#2D5A3D;color:#FAF6EE}
+#posh-gen .pg-card-meta{padding:.65rem 1.1rem;background:rgba(0,0,0,.08);border-bottom:1px solid rgba(201,168,76,.08);display:flex;flex-direction:column;gap:.25rem}
+#posh-gen .pg-meta-row{display:flex;gap:.5rem;align-items:baseline}
+#posh-gen .pg-meta-lbl{font-size:.6rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#4E8080;min-width:55px}
+#posh-gen .pg-meta-val{font-size:.8rem;color:#F5EDD3}
+#posh-gen .pg-card-body{padding:1.1rem;font-size:.85rem;line-height:1.75;color:rgba(250,246,238,.8);white-space:pre-wrap;font-family:'DM Sans',sans-serif;font-weight:300}
+#posh-gen .pg-toolbar{display:flex;align-items:center;gap:.75rem;margin-bottom:1rem}
+#posh-gen .pg-out-title{font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;color:#C9A84C;flex:1}
+#posh-gen .pg-allbtn{background:#2D5A3D;border:1px solid rgba(201,168,76,.2);color:#FAF6EE;font-family:'DM Sans',sans-serif;font-size:.65rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:.4rem .9rem;cursor:pointer;transition:all .2s}
+#posh-gen .pg-allbtn:hover{background:#3D6B4E}
+#posh-gen .pg-err{background:rgba(139,32,32,.15);border:1px solid rgba(139,32,32,.4);color:#E88080;padding:.9rem 1.1rem;font-size:.85rem;line-height:1.6}
+#posh-gen .pg-skel{display:flex;flex-direction:column;gap:1.25rem}
+#posh-gen .pg-skel-card{background:#1F3D2B;border:1px solid rgba(201,168,76,.1);border-top:3px solid rgba(201,168,76,.3);padding:1.1rem;display:flex;flex-direction:column;gap:.65rem}
+#posh-gen .pg-skel-line{height:.7rem;background:rgba(255,255,255,.06);animation:pgshim 1.4s infinite}
+@keyframes pgshim{0%,100%{opacity:.4}50%{opacity:.8}}
+</style>
+
+<div class="pg-head">
+  <div style="display:flex;align-items:baseline">
+    <span class="pg-logo">POSH Parenthood</span>
+    <span class="pg-tag">Outreach Engine</span>
+  </div>
+  <span class="pg-badge">Internal Use Only</span>
+</div>
+
+<div class="pg-body">
+  <div class="pg-panel">
+
+    <div>
+      <p class="pg-sec-title">Outreach Type</p>
+      <div class="pg-type-grid">
+        <button class="pg-tbtn on" onclick="pgSetType('sponsor',this)">Monetary<br>Sponsor</button>
+        <button class="pg-tbtn" onclick="pgSetType('inkind',this)">In-Kind<br>Donor</button>
+        <button class="pg-tbtn" onclick="pgSetType('corporate',this)">Corporate<br>Ticket Pack</button>
+        <button class="pg-tbtn" onclick="pgSetType('venue',this)">Venue<br>Partner</button>
+      </div>
+    </div>
+
+    <div class="pg-div"></div>
+
+    <div>
+      <p class="pg-sec-title">Organization</p>
+      <div class="pg-field"><label class="pg-lbl">Organization Name *</label><input id="pg-org" placeholder="e.g. Scholastic Corporation"/></div>
+      <div class="pg-field"><label class="pg-lbl">Contact Name</label><input id="pg-contact" placeholder="e.g. Jessica Rolph"/></div>
+      <div class="pg-field"><label class="pg-lbl">Contact Title</label><input id="pg-title" placeholder="e.g. CEO, Program Director"/></div>
+      <div class="pg-field"><label class="pg-lbl">What They Do (1–2 sentences)</label><textarea id="pg-desc" placeholder="e.g. Premium developmental toy company serving families with children ages 0–5."></textarea></div>
+    </div>
+
+    <div class="pg-div"></div>
+
+    <!-- Sponsor -->
+    <div id="pg-sf">
+      <p class="pg-sec-title">Sponsorship Details</p>
+      <div class="pg-field"><label class="pg-lbl">Target Tier</label>
+        <select id="pg-stier">
+          <option value="platinum">Platinum — Starting at $10,000/year</option>
+          <option value="gold">Gold — From $2,500/event · $6,000/year</option>
+          <option value="silver">Silver — $1,000/event · $2,500/year</option>
+        </select>
+      </div>
+      <div class="pg-field"><label class="pg-lbl">Category / Industry</label><input id="pg-scat" placeholder="e.g. Children's publishing, Pediatric health"/></div>
+      <div class="pg-field"><label class="pg-lbl">Mission Connection (optional)</label><input id="pg-smission" placeholder="e.g. Their Grow Up Great program aligns with..."/></div>
+    </div>
+
+    <!-- In-kind -->
+    <div id="pg-ikf" class="pg-cond">
+      <p class="pg-sec-title">In-Kind Details</p>
+      <div class="pg-field"><label class="pg-lbl">Donation Category</label>
+        <select id="pg-ikcat">
+          <option value="gifts">Gifts & Swag — Gift bags, branded items</option>
+          <option value="catering">Catering — Food & beverages</option>
+          <option value="floral">Floral / Décor</option>
+          <option value="printing">Printing — Programs, signage</option>
+        </select>
+      </div>
+      <div class="pg-field"><label class="pg-lbl">Estimated Value</label>
+        <select id="pg-ikval">
+          <option value="platinum">$5,000+ (Platinum-level recognition)</option>
+          <option value="gold">$2,500–$4,999 (Gold-level recognition)</option>
+          <option value="silver">$1,000–$2,499 (Silver-level recognition)</option>
+          <option value="community">Under $1,000 (Community acknowledgment)</option>
+        </select>
+      </div>
+      <div class="pg-field"><label class="pg-lbl">Why they're a natural fit</label><textarea id="pg-ikfit" placeholder="e.g. They supply branded merchandise to family-focused events."></textarea></div>
+    </div>
+
+    <!-- Venue -->
+    <div id="pg-vf" class="pg-cond">
+      <p class="pg-sec-title">Venue Details</p>
+      <div class="pg-field"><label class="pg-lbl">Venue Type</label>
+        <select id="pg-vtype">
+          <option value="hotel">Hotel / Conference Center</option>
+          <option value="university">University / College</option>
+          <option value="cultural">Cultural Center / Museum</option>
+          <option value="corporate">Corporate Event Space</option>
+          <option value="community">Community / Rec Center</option>
+        </select>
+      </div>
+      <div class="pg-field"><label class="pg-lbl">Which Event Needs a Venue?</label>
+        <select id="pg-vevent">
+          <option value="gathering">June 2026 Gathering (100–150 people, half-day)</option>
+          <option value="summit">September 2026 Summit (200+ people, full day)</option>
+          <option value="village">Spring 2027 Village (families + children, half-day)</option>
+        </select>
+      </div>
+      <div class="pg-field"><label class="pg-lbl">Why this space fits POSH</label><textarea id="pg-vfit" placeholder="e.g. Premium space, close to transit, aligns with our aesthetic."></textarea></div>
+    </div>
+
+    <!-- Corporate -->
+    <div id="pg-cf" class="pg-cond">
+      <p class="pg-sec-title">Corporate Pack Details</p>
+      <div class="pg-field"><label class="pg-lbl">Organization Type</label>
+        <select id="pg-ctype">
+          <option value="district">School District / Board of Ed</option>
+          <option value="pediatric">Pediatric Practice / Children's Hospital</option>
+          <option value="hr">HR / Employee Benefits Team</option>
+          <option value="nonprofit">Nonprofit / Family Services</option>
+          <option value="hospital">Hospital / Health System</option>
+        </select>
+      </div>
+      <div class="pg-field"><label class="pg-lbl">Recommended Pack</label>
+        <select id="pg-cpack">
+          <option value="5pack">5-Pack — $1,750 ($350/seat)</option>
+          <option value="10pack">10-Pack — $3,250 ($325/seat)</option>
+        </select>
+      </div>
+      <div class="pg-field"><label class="pg-lbl">Why bring their team?</label><textarea id="pg-creason" placeholder="e.g. Large staff of family counselors who'd benefit from Summit content."></textarea></div>
+    </div>
+
+    <div class="pg-div"></div>
+
+    <div>
+      <p class="pg-sec-title">Touchpoints to Generate</p>
+      <div class="pg-tprow">
+        <button class="pg-tpbtn on" data-tp="1" onclick="pgToggleTp(1,this)">TP1<br><small>Intro</small></button>
+        <button class="pg-tpbtn on" data-tp="2" onclick="pgToggleTp(2,this)">TP2<br><small>Follow-up</small></button>
+        <button class="pg-tpbtn on" data-tp="3" onclick="pgToggleTp(3,this)">TP3<br><small>Final Close</small></button>
+      </div>
+    </div>
+
+    <button class="pg-genbtn" id="pg-genbtn" onclick="pgGenerate()">
+      <span class="pg-btext">Generate Emails</span>
+      <div class="pg-spin"></div>
+    </button>
+
+  </div>
+
+  <div class="pg-out" id="pg-out">
+    <div class="pg-empty" id="pg-empty">
+      <div class="pg-empty-icon">✦</div>
+      <p class="pg-empty-txt">Fill in the details and generate<br>your custom email sequence.</p>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+(function(){
+  var pgType='sponsor';
+  var pgTps=new Set([1,2,3]);
+
+  window.pgSetType=function(type,btn){
+    pgType=type;
+    document.querySelectorAll('#posh-gen .pg-tbtn').forEach(function(b){b.classList.remove('on')});
+    btn.classList.add('on');
+    var map={sponsor:'pg-sf',inkind:'pg-ikf',venue:'pg-vf',corporate:'pg-cf'};
+    ['pg-sf','pg-ikf','pg-vf','pg-cf'].forEach(function(id){
+      var el=document.getElementById(id);
+      if(id==='pg-sf'){el.style.display=type==='sponsor'?'block':'none';}
+      else{el.classList.toggle('show',id===map[type]);}
+    });
+  };
+
+  window.pgToggleTp=function(n,btn){
+    if(pgTps.has(n)&&pgTps.size===1)return;
+    if(pgTps.has(n)){pgTps.delete(n);btn.classList.remove('on');}
+    else{pgTps.add(n);btn.classList.add('on');}
+  };
+
+  function pgEsc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+  function pgBuildPrompt(){
+    var org=document.getElementById('pg-org').value.trim();
+    if(!org)return null;
+    var contact=document.getElementById('pg-contact').value.trim();
+    var title=document.getElementById('pg-title').value.trim();
+    var desc=document.getElementById('pg-desc').value.trim();
+    var tps=Array.from(pgTps).sort();
+
+    var typeCtx='',purpose='';
+
+    if(pgType==='sponsor'){
+      var tier=document.getElementById('pg-stier').value;
+      var cat=document.getElementById('pg-scat').value.trim();
+      var mission=document.getElementById('pg-smission').value.trim();
+      var tinfo={platinum:'Platinum Founding Partner — starting at $10,000/year, 2-year minimum, category exclusive. Benefits: named presenting sponsor all materials, activation all 3 events, 5 VIP tickets/event, 2-min welcome address, gift bag inserts, social media features, first right of refusal. Custom/enhanced packages available for larger investments.',gold:'Gold Event Partner — from $2,500/event or $6,000/year (all 3 events). Benefits: sponsor table, logo all materials, 2 GA tickets, 1 social post, 50-word program listing, gift bag insert, post-event recognition.',silver:'Silver Community Partner — $1,000/event or $2,500/year. Benefits: sponsor table, logo in program, 1 GA ticket, 25-word listing, social mention, post-event recognition.'};
+      typeCtx='MONETARY SPONSORSHIP. Tier: '+tinfo[tier]+' Category: '+(cat||'general')+'. '+(mission?'Mission note: '+mission:'');
+      purpose='secure a sponsorship commitment';
+    } else if(pgType==='inkind'){
+      var ikcat=document.getElementById('pg-ikcat').value;
+      var ikval=document.getElementById('pg-ikval').value;
+      var ikfit=document.getElementById('pg-ikfit').value.trim();
+      var catlbl={gifts:'Gifts & Swag',catering:'Catering',floral:'Floral/Décor',printing:'Printing'};
+      var vallbl={platinum:'$5,000+ — Platinum-level recognition',gold:'$2,500–$4,999 — Gold-level recognition',silver:'$1,000–$2,499 — Silver-level recognition',community:'Under $1,000 — community acknowledgment'};
+      typeCtx='IN-KIND DONATION. Category: '+catlbl[ikcat]+'. Value: '+vallbl[ikval]+'. In-kind donors get non-cash benefits at their value level (logo, signage, social) but not cash perks like VIP tickets. '+(ikfit?'Fit: '+ikfit:'');
+      purpose='secure an in-kind donation';
+    } else if(pgType==='venue'){
+      var vtype=document.getElementById('pg-vtype').value;
+      var vevent=document.getElementById('pg-vevent').value;
+      var vfit=document.getElementById('pg-vfit').value.trim();
+      var evtlbl={gathering:'The POSH Parenthood Gathering — June 27 2026, Philadelphia/Delaware, 100–150 attendees, half-day',summit:'The POSH Parenthood Summit — Sept 28 2026, Northeast US, 200+ attendees, full day',village:'The POSH Parenthood Village — Spring 2027, family event with children 0–8'};
+      typeCtx='VENUE PARTNERSHIP. Venue type: '+vtype+'. Event: '+evtlbl[vevent]+'. Frame as mutual marketing — POSH brings premium engaged audience to their space. In exchange for donated/discounted space: presenting venue sponsor recognition, prominent signage, social features, program listing, audience of 100–200+ community professionals. '+(vfit?'Why it fits: '+vfit:'');
+      purpose='secure donated or discounted event space in exchange for presenting venue sponsor recognition';
+    } else {
+      var ctype=document.getElementById('pg-ctype').value;
+      var cpack=document.getElementById('pg-cpack').value;
+      var creason=document.getElementById('pg-creason').value.trim();
+      var packlbl={'5pack':'5-Pack $1,750 ($350/seat)','10pack':'10-Pack $3,250 ($325/seat)'};
+      var ctypelbl={district:'School District',pediatric:'Pediatric Practice/Children\'s Hospital',hr:'HR/Employee Benefits',nonprofit:'Nonprofit/Family Services',hospital:'Hospital/Health System'};
+      typeCtx='CORPORATE TICKET PACK. Org type: '+ctypelbl[ctype]+'. Pack: '+packlbl[cpack]+'. POSH Parenthood Summit Sept 28 2026 — full-day professional development for parents educators administrators, R.H.Y.T.H.M.™ Model. Frame as PD investment. '+(creason?'Why bring team: '+creason:'');
+      purpose='sell a corporate ticket pack';
+    }
+
+    var tplbls={1:'TP1 initial outreach',2:'TP2 follow-up (7–10 days later, assume no response)',3:'TP3 final kind close (7 days after TP2)'};
+
+    return {
+      org:org, tps:tps,
+      prompt:'You are writing outreach emails for Dr. Shanelle Bolton, Founder & CEO of POSH Parenthood.\n\nABOUT POSH PARENTHOOD:\n- Premium early childhood coaching & event brand\n- Founded by Dr. Shanelle Bolton, EdD, MST, MLS — 15+ years education leadership\n- R.H.Y.T.H.M.™ Model: Reflect · Harmonize · Yield · Teach · Hold · Maintain\n- Programs: Newborn Nest (0–3mo), Infant Foundations (3–12mo), Toddler Rhythms, Kindergarten Compass, Lab: Blueprint Edition\n- Events: The Gathering (June 27 2026, Philadelphia/Delaware, 100–150), The Summit (Sept 28 2026, NE US, 200+), The Village (Spring 2027 family event)\n- partnerships@poshparenthood.com | poshparenthood.com\n- Voice: warm, credentialed, purposeful, confident, never desperate, premium positioning\n\nRECIPIENT:\n- Organization: '+org+'\n- Contact: '+(contact||'[Contact Name]')+', '+(title||'[Title]')+'\n- About them: '+(desc||'Use your knowledge of this organization based on their name.')+'\n\nOUTREACH CONTEXT:\n'+typeCtx+'\n\nTASK: Write '+tps.length+' email(s) to '+purpose+'.\n\nFor each provide:\nTOUCHPOINT: [label]\nSUBJECT: [subject line]\nBODY: [complete email]\n\nTouchpoints needed:\n'+tps.map(function(t){return '- '+tplbls[t];}).join('\n')+'\n\nRULES:\n- TP1: Warm, specific to THEM, lead with connection before the ask. 3–4 short paragraphs max for large orgs.\n- TP2: Brief. Reference TP1. One new value point. Soft open question. No calendar links.\n- TP3: Very short. Gracious. No pressure. Leave door open. 3–4 sentences after greeting.\n- Never use calendar links in TP1 for foundations, large corps, or government orgs.\n- Never sound like a mass email.\n- Sign all: Dr. Shanelle Bolton, EdD, MST, MLS / Founder + CEO, POSH Parenthood / partnerships@poshparenthood.com | poshparenthood.com\n\nSeparate each email with --- on its own line.'
+    };
+  }
+
+  window.pgGenerate=function(){
+    var built=pgBuildPrompt();
+    if(!built){alert('Please enter an organization name.');return;}
+    var btn=document.getElementById('pg-genbtn');
+    btn.classList.add('loading');btn.disabled=true;
+    var out=document.getElementById('pg-out');
+    out.innerHTML='<div class="pg-skel">'+built.tps.map(function(){return '<div class="pg-skel-card"><div class="pg-skel-line" style="width:28%"></div><div class="pg-skel-line" style="width:55%"></div><div class="pg-skel-line"></div><div class="pg-skel-line" style="width:88%"></div><div class="pg-skel-line" style="width:93%"></div></div>';}).join('')+'</div>';
+
+    fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:3000,messages:[{role:'user',content:built.prompt}]})
+    }).then(function(r){return r.json();}).then(function(data){
+      if(data.error)throw new Error(data.error.message);
+      var raw=data.content.map(function(c){return c.text||'';}).join('');
+      pgRender(raw,built.org,built.tps);
+    }).catch(function(err){
+      out.innerHTML='<div class="pg-err">⚠ Error: '+pgEsc(err.message)+'</div>';
+    }).finally(function(){
+      btn.classList.remove('loading');btn.disabled=false;
+    });
+  };
+
+  function pgRender(raw,org,tps){
+    var out=document.getElementById('pg-out');
+    var sections=raw.split(/\n---\n/).map(function(s){return s.trim();}).filter(Boolean);
+    var tplbls=['Initial Outreach','Follow-Up','Final Close'];
+    var html='<div class="pg-toolbar"><span class="pg-out-title">Sequence for '+pgEsc(org)+'</span><button class="pg-allbtn" onclick="pgCopyAll()">Copy All</button></div><div class="pg-emails" id="pg-emails">';
+    sections.forEach(function(sec,i){
+      var tpn=tps[i]||(i+1);
+      var lbl=tplbls[tpn-1]||('TP'+tpn);
+      var subm=sec.match(/SUBJECT:\s*(.+)/i);
+      var subj=subm?subm[1].trim():'';
+      var body=sec.replace(/^TOUCHPOINT:.*\n/im,'').replace(/^SUBJECT:.*\n/im,'').replace(/^BODY:\s*/im,'').trim();
+      html+='<div class="pg-card" data-i="'+i+'"><div class="pg-card-hd"><span class="pg-card-tp">TP'+tpn+' — '+lbl+'</span><button class="pg-cpbtn" onclick="pgCopy('+i+')">Copy</button></div>'+(subj?'<div class="pg-card-meta"><div class="pg-meta-row"><span class="pg-meta-lbl">Subject</span><span class="pg-meta-val">'+pgEsc(subj)+'</span></div><div class="pg-meta-row"><span class="pg-meta-lbl">From</span><span class="pg-meta-val">partnerships@poshparenthood.com</span></div></div>':'')+'<div class="pg-card-body" id="pgb'+i+'">'+pgEsc(body)+'</div></div>';
+    });
+    html+='</div>';
+    out.innerHTML=html;
+  }
+
+  window.pgCopy=function(i){
+    var card=document.querySelector('#posh-gen .pg-card[data-i="'+i+'"]');
+    var subEl=card.querySelector('.pg-meta-val');
+    var subj=subEl?'Subject: '+subEl.textContent+'\n\n':'';
+    var body=document.getElementById('pgb'+i).textContent;
+    navigator.clipboard.writeText(subj+body).then(function(){
+      var btn=card.querySelector('.pg-cpbtn');
+      btn.textContent='Copied ✓';btn.classList.add('done');
+      setTimeout(function(){btn.textContent='Copy';btn.classList.remove('done');},2000);
+    });
+  };
+
+  window.pgCopyAll=function(){
+    var cards=document.querySelectorAll('#posh-gen .pg-card');
+    var all='';
+    cards.forEach(function(card){
+      var tp=card.querySelector('.pg-card-tp').textContent;
+      var subEl=card.querySelector('.pg-meta-val');
+      var subj=subEl?'Subject: '+subEl.textContent+'\n':'';
+      var body=card.querySelector('.pg-card-body').textContent;
+      all+=tp+'\n'+subj+'\n'+body+'\n\n'+'─'.repeat(50)+'\n\n';
+    });
+    navigator.clipboard.writeText(all).then(function(){
+      var btn=document.querySelector('#posh-gen .pg-allbtn');
+      btn.textContent='Copied ✓';
+      setTimeout(function(){btn.textContent='Copy All';},2000);
+    });
+  };
+})();
+</script>
